@@ -9,6 +9,9 @@ var time_p = document.getElementById("time");
 time_p.innerHTML = new Date();
 
 var distance = document.getElementById("distance-travelled");
+var distance_p2p = 0;
+
+var dn = document.getElementById("dn");
 
 var path_icon = L.divIcon({
     html: `<?xml version="1.0" encoding="UTF-8"?>
@@ -52,13 +55,17 @@ setInterval(async function() {
     
     marker = L.marker([iss.latitude, iss.longitude], {icon: path_icon}).addTo(map);
     
-    distance.innerHTML = Math.floor(calcCrow(starter_lat, starter_lon, iss.latitude, iss.longitude)) + " km (calcolo in linea d'aria della distanza percorsa da quando è partita la webapp)" ;
+    distance_p2p = distance_p2p + Math.floor(calcCrow(prev_lat, prev_lon, iss.latitude, iss.longitude))
+    distance.innerHTML = distance_p2p  + " km "
+    dn.innerText = "Lat: " + iss.latitude + " Lon: " + iss.longitude + " Alt: " + Math.floor(iss.altitude) + " km" + " Vel: " + Math.floor(iss.velocity) + " km/h" + " Daylight: " + iss.visibility
+
 
     L.polyline([[iss.latitude, iss.longitude], [prev_lat, prev_lon]], {color: 'black'}).addTo(map);
 
     
 }, 5000);
 
+//calcola la distanza da prev a current e aggiungi a variabile
 
 
 //calcolate the distance between two coordinates
